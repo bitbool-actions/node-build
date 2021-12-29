@@ -25,6 +25,7 @@ runs:
 
 #yarn
     - name: Get yarn cache directory path
+      shell: bash
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
       if: ${{ inputs.USE_YARN == 'true' }}
