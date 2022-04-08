@@ -7,6 +7,9 @@ inputs:
   NODE_VERSION:
     required: false
     default: "14.x"    
+  CI:
+    required: false
+    default: "true"    
 outputs:
   images: 
     description: "tagged images"
@@ -64,3 +67,5 @@ runs:
     - name: npm build
       shell: bash
       run: npm run build
+      env:
+        CI: "${{ inputs.CI }}"
