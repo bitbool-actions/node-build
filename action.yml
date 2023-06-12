@@ -1,26 +1,21 @@
-name: "docker-build-push"
-description: "build and push docker image"
+name: "node-build"
+description: "build node app"
 inputs: 
   USE_YARN:
     required: false
     default: "true"
   NODE_VERSION:
-    required: false
-    default: "14.x"    
+    required: true
   CI:
     required: false
     default: "true"    
-outputs:
-  images: 
-    description: "tagged images"
-    value: "${{ steps.meta.outputs.tags }}"
 runs:
   using: "composite"
   steps:
 
 
     - name: Use Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.NODE_VERSION }}
         registry-url: 'https://npm.pkg.github.com'
@@ -33,7 +28,7 @@ runs:
       run: echo "::set-output name=dir::$(yarn cache dir)"
       if: ${{ inputs.USE_YARN == 'true' }}
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -49,7 +44,7 @@ runs:
 
 #npm
     - name: Cache Node.js modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .npm
         key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
