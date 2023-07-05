@@ -8,7 +8,13 @@ inputs:
     required: true
   CI:
     required: false
-    default: "true"    
+    default: "true"
+  BUILD_NPM: 
+    required: false
+    default: "true"
+  BUILD_NUXT: 
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -61,6 +67,14 @@ runs:
 #build
     - name: npm build
       shell: bash
-      run: npm run build
+      run: npm run --cache .npm build
       env:
         CI: "${{ inputs.CI }}"
+      if: ${{ inputs.BUILD_NPM == 'true' }}
+
+    - name: nuxt build
+      shell: bash
+      run: npx nuxt build
+      env:
+        CI: "${{ inputs.CI }}"
+      if: ${{ inputs.BUILD_NUXT == 'true' }}
