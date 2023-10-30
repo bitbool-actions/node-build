@@ -52,15 +52,17 @@ runs:
     - name: Cache Node.js modules
       uses: actions/cache@v3
       with:
-        path: .npm
+        path: |
+          .npm
+          node_modules
         key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.OS }}-node-
       if: ${{ inputs.USE_YARN == 'false' }}
 
-    - name: npm ci
+    - name: npm install
       shell: bash
-      run: npm ci --cache .npm --prefer-offline 
+      run: npm install --cache .npm --prefer-offline 
       if: ${{ inputs.USE_YARN == 'false' }}
 
 
